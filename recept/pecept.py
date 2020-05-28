@@ -28,4 +28,4 @@ def get_shop_list_by_dishes(dishes, person_count):
 
 
 pprint(read())
-pprint(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
+#pprint(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
