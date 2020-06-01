@@ -1,7 +1,7 @@
 import requests
 import json
 
-API_KEY = 'OAuth AgAAAAADScWgAADLW17-JyB090H2r6MQTtWBsYQ'
+TOKEN = 'OAuth AgAAAAADScWgAADLW17-JyB090H2r6MQTtWBsYQ'
 URL ="https://cloud-api.yandex.net/v1/disk/resources/upload"
 
 """
@@ -15,27 +15,24 @@ def get_URL(name_file):
         "path": name_file,
         "overwrite": 'true'
     }
-    headers = {'Accept': 'application/json', 'Authorization':API_KEY}
+    headers = {'Accept': 'application/json', 'Authorization':TOKEN}
     response = requests.get(URL, params=params, headers=headers)
-    print(response)
-    json_ = response.json()
-    print(json_)
-    global href
-    href = json_['href']
-    return get_URL
+    print(response.text)
+    put_url = response.json().get('href')
+    print(put_url)
+    
     
 
-def download_file ():
-
-    response = requests.put(href)
-
+    files = {'file': open(name_file,'rb')}
+    response = requests.put(put_url, files=files)
     print (response.json)
 
-    return download_file 
+    return get_URL
 
-   
+
 
 get_URL("DEinRUS.txt")
 get_URL("FRinRUS.txt")
 get_URL("ESinRUS.txt")
-download_file()
+
+
