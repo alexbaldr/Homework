@@ -60,24 +60,24 @@ class USER:
                 'v': 5.107,
                 "user_id": id_f,
                 "extended": 0,
-                "count": 1000
+                "count": 5
                     }
 
-            repeat = True
-            while repeat:
-                response = requests.get(
+            #repeat = True
+            #while repeat:
+            response = requests.get(
                 'https://api.vk.com/method/groups.get', 
                 params=params)
-                data = response.json()
-                if 'error' in data and 'error_code' in data['error'] and data['error']['error_code'] == 6:
-                    time.sleep(2)
-                else:
-                    repeat = False
-                if 'error' not in data.keys():
-                    list_of_groups = data["response"]
-                    get_items_of_groups = list_of_groups.get("items")
-                    for i in get_items_of_groups:
-                        b.add(i)
+            data = response.json()
+            if 'error' in data: # and 'error_code' in data['error'] and data['error']['error_code'] == 6:
+                time.sleep(2)
+                #else:
+                    #repeat = False
+            if 'error' not in data.keys():
+                list_of_groups = data["response"]
+                get_items_of_groups = list_of_groups.get("items")
+                for i in get_items_of_groups:
+                    b.add(i)
 
         return b
 
@@ -91,7 +91,7 @@ class USER:
             'access_token': TOKEN,
             'v': 5.107,
             "group_id":i,
-            "count":1
+            "count":1000
             }
             response = requests.get(
                 'https://api.vk.com/method/groups.getMembers', params=params)
@@ -127,11 +127,11 @@ class USER:
                 gotten_groups.append(dict_of_same_groups)
 
         with open('groups.json', 'w',encoding = 'UTF-8') as f:
-            json.dump(gotten_groups,f,sort_keys=True, indent=2)            
+            json.dump(gotten_groups,f,ensure_ascii = False, sort_keys=True, indent=2)            
 
             return gotten_groups
 
 Evg = USER(TOKEN)
-Evg.get_grups()
+print(Evg.get_grups())
 Evg.get_friends()
 print(Evg.get_json())
