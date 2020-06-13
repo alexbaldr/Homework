@@ -126,12 +126,12 @@ class USER:
 
                 gotten_groups.append(dict_of_same_groups)
 
-        with open('groups.json', 'w',encoding = 'UTF-8') as f:
-            json.dump(gotten_groups,f,ensure_ascii = False, sort_keys=True, indent=2)            
+        #with open('groups.json', 'w',encoding = 'UTF-8') as f:
+        #    json.dump(gotten_groups,f,ensure_ascii = False, sort_keys=True, indent=2)            
 
             return gotten_groups
 
 Evg = USER(TOKEN)
 print(Evg.get_grups())
-Evg.get_friends()
-print(Evg.get_json())
+#Evg.get_friends()
+#print(Evg.get_json())
