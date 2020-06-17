@@ -9,47 +9,39 @@ OAUTH_PARAMS = {
     'response_type': 'token',
     'v': 5.107
 }
+#
+#print('?'.join(
+#    (OAUTH_URL, urlencode(OAUTH_PARAMS))
+#   ))
 
-print('?'.join(
-    (OAUTH_URL, urlencode(OAUTH_PARAMS))
-    ))
-
-Token = "89fa88c0ab3ca79b7dba67d6f159b4466bb6a71011c76eb726147a84b881d2205f6f2e7041c00d0f560ac" #&expires_in=86400&user_id=18526683
+Token = "81ff236956418c97c8adda143b74ed17c8cab00b5b96d913000bf2004735bad2d4d440946d2f785cf8a41"
 
 class USER:
 
-    def __init__(self):
-        return 
+    def __init__(self, user):
+        self.user = user
+        self.params = {"access_token": Token, "v": 5.107, "user_id": self.user}
 
-    def get_friends(self,user1,user2):
-        self.user1 = user1
-        self.user2 = user2
-        params = {"access_token":Token,
-                    "v":5.107,
-                    "user_id":user1,
-        }
+    def get_friends(self):
 
-        response = requests.get("https://api.vk.com/method/friends.get",params)
-        res = response.json()["response"]["items"]
-        user1 = set(res)
+        response = requests.get("https://api.vk.com/method/friends.get", params=self.params)
+        res = set(response.json()["response"]["items"])
+        return res
 
-        params = {"access_token":Token,
-                    "v":5.107,
-                    "user_id":user2,
-        }
+    def __and__(self, other_user):
+        result = self.get_friends() & other_user.get_friends()
+        common_list = []
+        for id in result:
+            common_list.append(USER(id))
+        return common_list
 
-        response = requests.get("https://api.vk.com/method/friends.get",params)
-        res1 = response.json()["response"]["items"]
-        user2 = set(res1)
-
-        result = user1 & user2
-        for i in result:
-            user = (f"https://vk.com/id{i}")
-        return user
-
-    
-
-USER_id = USER()
-print(USER_id.get_friends(18526683,3136163))
+    def __str__(self):
+        return f"https://vk.com/id{str(self.user)}"
 
 
+user1 = USER(18526683)
+user2 = USER(3345683)
+
+users = user1 & user2
+for user in users:
+    print(user)
